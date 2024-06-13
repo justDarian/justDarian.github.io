@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>darian <3</title>
+    <title>darian</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/avatars/1055188030442459195/a_32b4cf548bdac59d0031bb130d40013e.gif?size=80">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
     <script src="https://kit.fontawesome.com/fcb5095760.js" crossorigin="anonymous"></script>
@@ -16,17 +17,19 @@
     <audio id="audio"></audio>
     <div class="main">
         <canvas id="canvas"></canvas>
+        <h1 style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center;font-size: 40px">darian</h1>
         <br>
-        <h1 style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center;font-size: 30px">darian :3</h1>
+        <h2>
+            <span id="type"></span>
+        </h2>
+        <br>
+        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
         <br>
         <p>
             <i class="devicon-lua-plain"></i> LUA
             <i class="devicon-javascript-plain"></i> JavaScript
             <i class="devicon-python-plain"></i> Python
         </p>
-
-        <br>
-        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
         <br>
         <ul>
             <a href="https://discord.com/users/1055188030442459195"><i class="fa-brands fa-discord"></i></a>
@@ -39,6 +42,7 @@
         <img src="https://discord.c99.nl/widget/theme-2/1055188030442459195.png">
         <br>
         <br>
+        <div id="now-playing" style="font-size: 15px; text-align: center;"></div>
     </div>
 </body>
 
@@ -191,36 +195,54 @@
 </script>
 
 <script>
-
-    const playlist = []; // originally had the song names added manually but
-    // im lazy and renamed each song to a number and automated adding it to the playlist
-    for (let i=1;i<8;i++) {
-        playlist.push("bg/"+i.toString()+".mp3")
-    }
-    let currentSongIndex = 0;
-
-    function play(overwriteIndex) {
-        const audioPlayer = document.getElementById('audio'); // use a element instead of new Audio for more control over the songs being played
-        audioPlayer.src = playlist[overwriteIndex ? overwriteIndex : currentSongIndex]; // play the next song or the chosen song
+    const audioPlayer = document.getElementById('audio');
+    const nowPlaying = document.getElementById('now-playing');
+    // load the files from github api cuz too lazy to manually add
+    fetch('https://api.github.com/repos/justDarian/justDarian.github.io/contents/bg').then(response => response.json())
+    .then(files => {
+        playlist = files.filter(file => file.name.endsWith('.mp3')).map(file => file.download_url);
+    });
+    
+    const play = () => {
+        const nextSong = playlist[Math.floor(Math.random() * playlist.length)] // i forgot math.floor and it wasnt working for like 2 hours kms
+        audioPlayer.src = nextSong
         audioPlayer.play();
-        !overwriteIndex && (currentSongIndex = (currentSongIndex + 1) % playlist.length); // if the index is overwritten, dont modify it
-        return true
-    }
-
-    document.getElementById('audio').addEventListener('ended', play);
-
+        nowPlaying.textContent = `NOW PLAYING: ${nextSong.split("/").pop()}`;
+    };
+    
+    audioPlayer.addEventListener('ended', play);
+    
+    // css by chatgpt :fire:
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;z-index:9999;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;font-family:"Comic Sans MS", cursive;transition: opacity 1s ease;';
     overlay.textContent = 'Click To Enter';
-
-    overlay.onclick = function () {
+    
+    overlay.onclick = async function () {
         overlay.style.opacity = '0';
-        setTimeout(async () => {
-            document.body.removeChild(overlay);
+        setTimeout(() => {
+            document.body.removeChild(overlay); // allow smoothness before delete
         }, 1000);
-        play(Math.floor(Math.random() * playlist.length)) // because of 0 indexing u cant add 1 (i learned this the hard way)
+        play()
     };
-
-    document.body.appendChild(overlay);
-
+    
+    document.body.appendChild(overlay); 
+    
+    // start the typerwriter!!
+    new Typed('#type', {
+        strings: [
+            'is a professional idiot',
+            'is a degenerate',
+            'cant spal',
+            'creates memory leaks',
+            'hasnt touched grass',
+            'owns devtech',
+            'needs a family'
+        ],
+        typeSpeed: 60,
+        backSpeed: 25,
+        backDelay: 2000,
+        shuffle: true,
+        loop: true,
+        smartBackspace: true
+    });
 </script>
