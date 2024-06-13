@@ -207,7 +207,7 @@
         const nextSong = playlist[Math.floor(Math.random() * playlist.length)] // i forgot math.floor and it wasnt working for like 2 hours kms
         audioPlayer.src = nextSong
         audioPlayer.play();
-        nowPlaying.textContent = `NOW PLAYING: ${nextSong.split("/").pop()}`;
+        nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.split("/").pop())}`;
     };
     
     audioPlayer.addEventListener('ended', play);
