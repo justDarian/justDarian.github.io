@@ -197,14 +197,21 @@
 <script>
     const audioPlayer = document.getElementById('audio');
     const nowPlaying = document.getElementById('now-playing');
-    // load the files from github api cuz too lazy to manually add
-    fetch('https://api.github.com/repos/justDarian/justDarian.github.io/contents/bg').then(response => response.json())
-    .then(files => {
-        playlist = files.filter(file => file.name.endsWith('.mp3')).map(file => file.download_url);
-    });
+    const playlist = [
+        "Batman!.mp3",
+        "california gurls! (pluggnb remix).mp3",
+        "chinatown!.mp3",
+        "hope u doing well.mp3",
+        "Islands (kompa pasión).mp3",
+        "lenn.mp3",
+        "Renai Circulation.mp3",
+        "riddle.mp3",
+        "Tek It.mp3"
+    ]
     
     const play = () => {
-        const nextSong = playlist[Math.floor(Math.random() * playlist.length)] // i forgot math.floor and it wasnt working for like 2 hours kms
+        // add the playlist infront of the randomlly chosen song using js's shitty math.random
+        const nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
         audioPlayer.src = nextSong
         audioPlayer.play();
         nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.split("/").pop())}`;
@@ -229,6 +236,7 @@
     
     // start the typerwriter!!
     new Typed('#type', {
+        // sigma!
         strings: [
             'is a professional idiot',
             'is a degenerate',
