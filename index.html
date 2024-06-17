@@ -232,7 +232,7 @@
         }, 1000);
         url = new URL(window.location.href) // omg
         override = url.searchParams.get("o") // get override from url
-        play(override && override) // apply the override if it exists (suprised this worked and didnt error)
+        play(override ? override : Math.floor(Math.random() * playlist.length)) // apply the override if it exists (suprised this worked and didnt error)
     };
     
     document.body.appendChild(overlay); 
