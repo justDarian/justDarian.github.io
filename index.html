@@ -195,6 +195,8 @@
 </script>
 
 <script>
+    let nextSong;
+    const params = new URLSearchParams(window.location.search) // :fire:
     const audioPlayer = document.getElementById('audio');
     const nowPlaying = document.getElementById('now-playing');
     const playlist = [
@@ -211,14 +213,22 @@
     ]
     
     const play = () => {
-        // add the playlist infront of the randomlly chosen song using js's shitty math.random
-        const nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
+        // check the o param for existence
+        if (params.get("o") === null) {
+            // not existent
+            nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
+        } else {
+            // existent!!!1 skibidi toilet
+            nextSong = "bg/" + playlist[parseInt(params.get("o"))]
+            audioPlayer.loop = true;
+        }
+
         audioPlayer.src = nextSong
         audioPlayer.play();
         nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.split("/").pop())}`;
     };
     
-    audioPlayer.addEventListener('ended', play);
+    audioPlayer.addEventListener('ended', play); // call the play function again when the audioplayer ended
     
     // css by chatgpt :fire:
     const overlay = document.createElement('div');
