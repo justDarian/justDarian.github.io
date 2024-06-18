@@ -210,9 +210,8 @@
         "Red Sun In The Sky.mp3",
     ]
     
-    const play = (override) => {
-        // add the playlist infront of the randomlly chosen song using js's shitty math.random (or uses the override :fire:)
-        const nextSong = "bg/" + playlist[override ? override : Math.floor(Math.random() * playlist.length)]
+    const play = () => {
+        const nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
         audioPlayer.src = nextSong
         audioPlayer.play();
         nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.split("/").pop())}`;
@@ -230,9 +229,7 @@
         setTimeout(() => {
             document.body.removeChild(overlay); // allow smoothness before delete
         }, 1000);
-        url = new URL(window.location.href) // omg
-        override = url.searchParams.get("o") // get override from url
-        play(override ? override : Math.floor(Math.random() * playlist.length)) // apply the override if it exists (suprised this worked and didnt error)
+        play()
     };
     
     document.body.appendChild(overlay); 
