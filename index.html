@@ -211,6 +211,7 @@
     ]
     
     const play = () => {
+        // add the playlist infront of the randomlly chosen song using js's shitty math.random
         const nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
         audioPlayer.src = nextSong
         audioPlayer.play();
