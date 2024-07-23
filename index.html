@@ -265,4 +265,9 @@
         loop: true,
         smartBackspace: true
     });
+
+    // makes the title hot
+    setInterval(()=>{
+        document.title = "darian | " + document.getElementById("type").innerText
+    },1)
 </script>
