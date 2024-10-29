@@ -237,6 +237,7 @@
     
     overlay.onclick = async function () {
         overlay.style.opacity = '0';
+        overlay.onclick = null
         setTimeout(() => {
             document.body.removeChild(overlay); // allow smoothness before delete
         }, 1000);
