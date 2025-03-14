@@ -190,45 +190,48 @@
 </script>
 
 <script>
+    // me and damian have a hidden relationship
+    document.body.oncontextmenu = () => false;
+    document.body.onkeydown = () => false;
+
     let nextSong;
     const params = new URLSearchParams(window.location.search) // :fire:
     const audioPlayer = document.getElementById('audio');
     const nowPlaying = document.getElementById('now-playing');
     const playlist = [
-        "Batman!.mp3",
-        "california gurls! (pluggnb remix).mp3",
-        "chinatown!.mp3",
-        "hope u doing well.mp3",
-        "Islands (kompa pasión).mp3",
-        "bando.mp3",
-        "Renai Circulation.mp3",
-        "Glamorous x 9 Am In Calabasas.mp4",
-        "Red Sun In The Sky.mp3",
-        "Wasted Summers.mp3",
-        "HasToBe.mp3",
-        "HurtingHeart.mp3",
-        "HeavenSent.mp3"
+        { src: "Batman!.mp3", volume: 0.3 },
+        { src: "california gurls! (pluggnb remix).mp3", volume: 0.6 },
+        { src: "chinatown!.mp3", volume: 0.8 },
+        { src: "hope u doing well.mp3", volume: 0.8 },
+        { src: "Islands (kompa pasión).mp3", volume: 0.6 },
+        { src: "bando.mp3", volume: 0.8 },
+        { src: "Renai Circulation.mp3", volume: 0.3 },
+        { src: "Glamorous x 9 Am In Calabasas.mp4", volume: 0.99 },
+        { src: "Red Sun In The Sky.mp3", volume: 0.3 },
+        { src: "Wasted Summers.mp3", volume: 0.9 },
+        { src: "HasToBe.mp3", volume: 0.5 },
+        { src: "HurtingHeart.mp3", volume: 0.4 },
+        { src: "HeavenSent.mp3", volume: 0.4 }
     ]
     
     const play = () => {
-        // check the o param for existence
+        // check the o url param
         if (params.get("o") === null) {
-            // not existent
-            nextSong = "bg/" + playlist[Math.floor(Math.random() * playlist.length)]
+            nextSong = playlist[Math.floor(Math.random() * playlist.length)];
         } else {
-            // existent!!!1 skibidi toilet
-            nextSong = "bg/" + playlist[parseInt(params.get("o"))]
-            audioPlayer.loop = true;
+            // who the fuck added skibidi toilet here
+            nextSong = playlist[parseInt(params.get("o")) - 1];
         }
 
-        audioPlayer.src = nextSong
+        audioPlayer.src = "/bg/" + nextSong.src;
+        audioPlayer.volume = nextSong.volume;
         audioPlayer.play();
-        nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.split("/").pop())}`;
+        nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.src)}`;
     };
     
     audioPlayer.addEventListener('ended', play); // call the play function again when the audioplayer ended
-    
     // css by chatgpt :fire:
+    // i wasnt lying the css is indeed chatgpt :sob:
     const overlay = document.createElement('div');
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000;z-index:9999;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;font-family:"Comic Sans MS", cursive;transition: opacity 1s ease;';
     overlay.textContent = 'Click To Enter';
@@ -254,7 +257,7 @@
             'cant spal',
             'creates memory leaks',
             'doesnt touch grass',
-            'owns devtech',
+            'is a femboy',
             'needs a family'
         ],
         typeSpeed: 60,
@@ -268,5 +271,5 @@
     // makes the title hot
     setInterval(()=>{
         document.title = "darian | " + document.getElementById("type").innerText
-    },100)
+    },500)
 </script>
