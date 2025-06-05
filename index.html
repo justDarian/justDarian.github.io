@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- lenn is cute -->
+
 <head>
     <script src="https://unpkg.com/typed.js@latest/dist/typed.umd.js"></script>
     <script src="disabler.js"></script>
@@ -132,7 +133,14 @@
         font-size: clamp(16px, 3vw, 24px);
     }
 
-    h1, h2, p, a, pre, #type, #now-playing, i {  
+    h1,
+    h2,
+    p,
+    a,
+    pre,
+    #type,
+    #now-playing,
+    i {
         text-shadow: 0 0 15px rgba(255, 255, 255, 0.35);
         filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.15));
     }
@@ -157,8 +165,9 @@
         0% {
             filter: drop-shadow(0 0 1px white) drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
         }
+
         100% {
-            filter: drop-shadow(0 0 3px white) drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+            filter: drop-shadow(0 0 3px white) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
         }
     }
 
@@ -166,11 +175,11 @@
         #customCursor {
             display: none !important;
         }
-        
+
         * {
             cursor: auto !important;
         }
-        
+
         *:hover {
             cursor: auto !important;
         }
@@ -215,7 +224,7 @@
         .main {
             padding: 0 5vw;
         }
-        
+
         .main p:first-of-type,
         .main p:last-of-type {
             font-size: clamp(10px, 4vw, 14px);
@@ -227,27 +236,27 @@
 
 <script>
     let nextSong;
-    let lastSongIndex = 69;
+    let songData = JSON.parse(localStorage.getItem('songData') || '{"lastPlayed": null, "firstVisit": true}');
     const lmao = alert;
     const params = new URLSearchParams(window.location.search);
     const audioPlayer = document.getElementById('audio');
     const nowPlaying = document.getElementById('now-playing');
     const overlay = document.getElementById('overlay');
     const playlist = [
-        { src: "Batman!.mp3", volume: 0.3 },
-        { src: "california gurls! (pluggnb remix).mp3", volume: 0.6 },
-        { src: "chinatown!.mp3", volume: 0.8 },
-        { src: "hope u doing well.mp3", volume: 0.8 },
-        { src: "Islands (kompa pasión).mp3", volume: 0.5 },
-        { src: "bando.mp3", volume: 0.8 },
-        { src: "Renai Circulation.mp3", volume: 0.3 },
-        { src: "Glamorous x 9 Am In Calabasas.mp4", volume: 0.99 },
-        { src: "Red Sun In The Sky.mp3", volume: 0.3 },
-        { src: "Wasted Summers.mp3", volume: 0.9 },
-        { src: "HasToBe.mp3", volume: 0.5 },
-        { src: "HurtingHeart.mp3", volume: 0.4 },
-        { src: "HeavenSent.mp3", volume: 0.4 },
-        { src: "Until I Bleed Out.wav", volume: .7 },
+        { src: "Batman!.mp3", volume: .3 },
+        { src: "california gurls! (pluggnb remix).mp3", volume: .6 },
+        { src: "chinatown!.mp3", volume: .8 },
+        { src: "hope u doing well.mp3", volume: .8 },
+        { src: "Islands (kompa pasión).mp3", volume: .5 },
+        { src: "bando.mp3", volume: .8 },
+        // { src: "Renai Circulation.mp3", volume: 0.3 }, get rid of that zest fest
+        // { src: "Red Sun In The Sky.mp3", volume: .3 }, :skull:
+        { src: "Glamorous x 9 Am In Calabasas.mp4", volume: .99 },
+        { src: "Wasted Summers.mp3", volume: .9 },
+        { src: "HasToBe.mp3", volume: .5 },
+        { src: "HurtingHeart.mp3", volume: .4 },
+        { src: "HeavenSent.mp3", volume: .4 },
+        { src: "Until I Bleed Out.wav", volume: .7, force:true },
     ]
 
     // disable devtools if bypass is not defined (please dont use bypass unless you are darian :pray:)
@@ -257,7 +266,7 @@
             ondevtoolopen: () => {
                 document.body.innerHTML = "";
                 document.head.innerHTML = "";
-                lmao('detected + banwaved its over gng')
+                lmao('detected + banwaved its over gng, close devtools homefry')
             },
             clearIntervalWhenDevOpenTrigger: true,
         });
@@ -265,26 +274,52 @@
 
     const play = () => {
         if (params.get("o") === null) {
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * playlist.length);
-            } while (randomIndex === lastSongIndex && playlist.length > 1);
-            
-            lastSongIndex = randomIndex;
-            nextSong = playlist[randomIndex];
+             // if no specific song param
+            if (songData.firstVisit) {
+                songData.firstVisit = false;
+                // try to find a forced song first
+                let forcedSong = playlist.find(song => song.force);
+                if (forcedSong) {
+                    nextSong = forcedSong;
+                    songData.lastPlayed = playlist.indexOf(forcedSong);
+                    localStorage.setItem('songData', JSON.stringify(songData));
+                } else {
+                    // pick random song that isnt the last one
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * playlist.length);
+                    } while (randomIndex === songData.lastPlayed && playlist.length > 1);
+
+                    songData.lastPlayed = randomIndex;
+                    localStorage.setItem('songData', JSON.stringify(songData));
+                    nextSong = playlist[randomIndex];
+                }
+            } else {
+                // not first visit, just pick random song
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * playlist.length);
+                } while (randomIndex === songData.lastPlayed && playlist.length > 1);
+
+                songData.lastPlayed = randomIndex;
+                localStorage.setItem('songData', JSON.stringify(songData));
+                nextSong = playlist[randomIndex];
+            }
         } else {
+            // song with ?o= parameter
             nextSong = playlist[parseInt(params.get("o")) - 1];
         }
 
+        // start song
         audioPlayer.src = "/bg/" + nextSong.src;
         audioPlayer.volume = nextSong.volume;
         audioPlayer.play();
         nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.src)}`;
     };
-    
+
     audioPlayer.addEventListener('ended', play);
 
-    overlay.onclick = async function () {
+    overlay.onclick = async function() {
         overlay.style.opacity = '0';
         overlay.onclick = null
         setTimeout(() => {
@@ -296,14 +331,15 @@
     // start the typerwriter!!
     new Typed('#type', {
         strings: [
-            'is a professional idiot',
+            'is an idiot',
             'is a degenerate',
-            'is a discord degenerate',
-            'cant spal',
+            'cant spel',
             'creates memory leaks',
             'doesnt touch grass',
-            'is a femboy',
-            'needs a family'
+            'pooped once last week',
+            'has no life',
+            'showers once a month',
+            'is unemployed',
         ],
         typeSpeed: 60,
         backSpeed: 25,
@@ -313,9 +349,9 @@
         smartBackspace: true
     });
 
-    setInterval(()=>{
+    setInterval(() => {
         document.title = "darian | " + document.getElementById("type").innerText
-    },100)
+    }, 100)
 </script>
 
 <script>
@@ -348,9 +384,14 @@
         const fallDistance = Math.random() * 100 + 80;
         const driftX = (Math.random() - 0.5) * 20;
 
-        particle.animate([
-            { transform: `translate(0, 0)`, opacity: 1 },
-            { transform: `translate(${driftX}px, ${fallDistance}px)`, opacity: 0 }
+        particle.animate([{
+                transform: `translate(0, 0)`,
+                opacity: 1
+            },
+            {
+                transform: `translate(${driftX}px, ${fallDistance}px)`,
+                opacity: 0
+            }
         ], {
             duration: animationDuration,
             easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
@@ -367,17 +408,17 @@
         document.addEventListener('mousemove', function(e) {
             const now = Date.now();
             const moveDistance = Math.sqrt(Math.pow(e.clientX - lastMouseX, 2) + Math.pow(e.clientY - lastMouseY, 2));
-            
+
             isMoving = moveDistance > 5;
-            
+
             if (isMoving && now - lastParticleTime > 100) {
                 createParticle(e.clientX + 2, e.clientY + 2);
                 lastParticleTime = now;
             }
-            
+
             lastMouseX = e.clientX;
             lastMouseY = e.clientY;
-            
+
             clearTimeout(idleParticleInterval);
             idleParticleInterval = setTimeout(() => {
                 isMoving = false;
@@ -393,8 +434,16 @@
 
         setTimeout(idleParticleShit, Math.random() * 1000 + 500);
     }
-    
+
+    // basically mobile = no cursor and no particles falling from cursor (that doesnt exist lol)
     if (!isMobile) {
         idleParticleShit();
     }
+
+    // i think this works
+    setInterval(() => {
+        setTimeout(() => {
+            createParticle(Math.random() * window.innerWidth, Math.random() * window.innerHeight * 0.3);
+        }, Math.random() * 1000 + 100);
+    }, isMobile ? 300 : 1000);
 </script>
