@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- lenn is cute -->
+<head>
+    <script src="https://unpkg.com/typed.js@latest/dist/typed.umd.js"></script>
+    <script src="disabler.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>darian</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <script src="https://kit.fontawesome.com/fcb5095760.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <audio id="audio"></audio>
+    <div id="customCursor"></div>
+    <div id="overlay">Click To Enter</div>
+    <div class="main">
+        <h1 style="margin-bottom: 20px; display: flex; align-items: center; justify-content: center;font-size: 40px">darian</h1>
+        <br>
+        <h2>
+            <span id="type"></span>
+        </h2>
+        <br>
+        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+        <br>
+        <p>
+            <i class="devicon-lua-plain"></i> LUA
+            <i class="devicon-javascript-plain"></i> JavaScript
+            <i class="devicon-python-plain"></i> Python
+        </p>
+        <br>
+        <ul>
+            <a href="https://discord.com/users/715572577111900211"><i class="fa-brands fa-discord"></i></a>
+            <a href="https://github.com/justDarian"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.youtube.com/@justdarian"><i class="fa-brands fa-youtube"></i></a>
+        </ul>
+        <br>
+        <p>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+        <div id="now-playing" style="font-size: 15px; text-align: center;"></div>
+    </div>
+</body>
+
+</html>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        cursor: none !important;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+    }
+
+    *:hover {
+        cursor: none !important;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background-color: black;
+        color: white;
+        font-family: monospace;
+    }
+
+    a {
+        color: white;
+        text-transform: none;
+        transition: 0.3s;
+    }
+
+    a:hover {
+        color: #fff;
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+    }
+
+    .main {
+        display: flex;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    h1, h2, p, a, pre, #type, #now-playing, i {  
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.35);
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.15));
+    }
+
+    #customCursor {
+        position: fixed;
+        width: 12px;
+        height: 26px;
+        pointer-events: none;
+        z-index: 10000;
+        filter: drop-shadow(0 0 2px white) drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2016%2020%22%3E%3Cpath%20d%3D%22M1%203h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v2H9v1h1v2h1v2h-1v1H8v-1H7v-2H6v-2H5v1H4v1H3v1H1%22%2F%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M2%205h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1h1v1H8v2h1v2h1v2H8v-2H7v-2H6v-1H5v1H4v1H3v1H2%22%2F%3E%3C%2Fsvg%3E");
+        background-size: contain;
+        background-position: top left;
+        background-repeat: no-repeat;
+        left: -100px;
+        top: -100px;
+        animation: cursorGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes cursorGlow {
+        0% {
+            filter: drop-shadow(0 0 1px white) drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
+        }
+        100% {
+            filter: drop-shadow(0 0 3px white) drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+        }
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index: 9999;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        cursor: none;
+        font-family: "Comic Sans MS", cursive;
+        transition: opacity 1s ease;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.35);
+        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+    }
+
+    .particle {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.6);
+    }
+</style>
+
+<script>
+    // me and damian are having an affair
+    let nextSong;
+    const lmao = alert;
+    const params = new URLSearchParams(window.location.search);
+    const audioPlayer = document.getElementById('audio');
+    const nowPlaying = document.getElementById('now-playing');
+    const overlay = document.getElementById('overlay');
+    const playlist = [
+        { src: "Batman!.mp3", volume: 0.3 },
+        { src: "california gurls! (pluggnb remix).mp3", volume: 0.6 },
+        { src: "chinatown!.mp3", volume: 0.8 },
+        { src: "hope u doing well.mp3", volume: 0.8 },
+        { src: "Islands (kompa pasión).mp3", volume: 0.5 },
+        { src: "bando.mp3", volume: 0.8 },
+        { src: "Renai Circulation.mp3", volume: 0.3 },
+        { src: "Glamorous x 9 Am In Calabasas.mp4", volume: 0.99 },
+        { src: "Red Sun In The Sky.mp3", volume: 0.3 },
+        { src: "Wasted Summers.mp3", volume: 0.9 },
+        { src: "HasToBe.mp3", volume: 0.5 },
+        { src: "HurtingHeart.mp3", volume: 0.4 },
+        { src: "HeavenSent.mp3", volume: 0.4 },
+        { src: "Until I Bleed Out.wav", volume: .7 },
+    ]
+
+    // disable devtools if bypass is not defined (please dont use bypass unless you are darian :pray:)
+    if (params.get("bypass") === null) {
+        document.body.oncontextmenu = () => false;
+        DisableDevtool({
+            ondevtoolopen: () => {
+                document.body.innerHTML = "";
+                document.head.innerHTML = "";
+                lmao('detected + banwaved its over gng')
+            },
+            clearIntervalWhenDevOpenTrigger: true,
+        });
+    }
+
+    let lastSongIndex = 69;
+
+    const play = () => {
+        if (params.get("o") === null) {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * playlist.length);
+            } while (randomIndex === lastSongIndex && playlist.length > 1);
+            
+            lastSongIndex = randomIndex;
+            nextSong = playlist[randomIndex];
+        } else {
+            nextSong = playlist[parseInt(params.get("o")) - 1];
+        }
+
+        audioPlayer.src = "/bg/" + nextSong.src;
+        audioPlayer.volume = nextSong.volume;
+        audioPlayer.play();
+        nowPlaying.textContent = `NOW PLAYING: ${decodeURIComponent(nextSong.src)}`;
+    };
+    
+    audioPlayer.addEventListener('ended', play);
+
+    overlay.onclick = async function () {
+        overlay.style.opacity = '0';
+        overlay.onclick = null
+        setTimeout(() => {
+            document.body.removeChild(overlay);
+        }, 1000);
+        play()
+    };
+    
+    const customCursor = document.getElementById('customCursor');
+
+    document.addEventListener('mousemove', function(e) {
+        if (customCursor) {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        }
+    });
+
+    // start the typerwriter!!
+    new Typed('#type', {
+        strings: [
+            'is a professional idiot',
+            'is a degenerate',
+            'is a discord degenerate',
+            'cant spal',
+            'creates memory leaks',
+            'doesnt touch grass',
+            'is a femboy',
+            'needs a family'
+        ],
+        typeSpeed: 60,
+        backSpeed: 25,
+        backDelay: 2000,
+        shuffle: true,
+        loop: true,
+        smartBackspace: true
+    });
+
+    setInterval(()=>{
+        document.title = "darian | " + document.getElementById("type").innerText
+    },100)
+</script>
+<!--  particle stuff -->
+<script>
+    let lastParticleTime = 0;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+    let isMoving = false;
+    let idleParticleInterval;
+
+    function createParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        document.body.appendChild(particle);
+
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+
+        const animationDuration = Math.random() * 1500 + 1500;
+        const fallDistance = Math.random() * 100 + 80;
+        const driftX = (Math.random() - 0.5) * 20;
+
+        particle.animate([
+            { transform: `translate(0, 0)`, opacity: 1 },
+            { transform: `translate(${driftX}px, ${fallDistance}px)`, opacity: 0 }
+        ], {
+            duration: animationDuration,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        });
+
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, animationDuration);
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        const now = Date.now();
+        const moveDistance = Math.sqrt(Math.pow(e.clientX - lastMouseX, 2) + Math.pow(e.clientY - lastMouseY, 2));
+        
+        isMoving = moveDistance > 5;
+        
+        if (isMoving && now - lastParticleTime > 100) {
+            createParticle(e.clientX + 2, e.clientY + 2);
+            lastParticleTime = now;
+        }
+        
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        
+        clearTimeout(idleParticleInterval);
+        idleParticleInterval = setTimeout(() => {
+            isMoving = false;
+        }, 100);
+    });
+
+    function idleParticleShit() {
+        if (!isMoving && customCursor) {
+            const rect = customCursor.getBoundingClientRect();
+            createParticle(rect.left + 2, rect.top + 2);
+        }
+
+        setTimeout(idleParticleShit, Math.random() * 1000 + 500);
+    }
+    
+    idleParticleShit();
+</script>
